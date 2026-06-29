@@ -1,24 +1,13 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -std=c17 -Iinclude
-LDFLAGS = -lncurses
+.PHONY: all build run clean # even if build/ exists, still runs
 
-SRC = $(wildcard src/*.c)
-OBJ = $(SRC:.c=.o)
+all: build
 
-TARGET = mp
-
-all: $(TARGET)
-
-$(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+build:
+	mkdir -p build && \
+	cd build && \
+	cmake .. && \
+	cmake --build . && \
+	cp ./make_project ../mp
 
 clean:
-	rm -f $(OBJ) $(TARGET)
-
-run: $(TARGET)
-	./$(TARGET)
-
-.PHONY: all clean run
+	rm -rf build/ mp
