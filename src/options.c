@@ -64,3 +64,14 @@ bool ask_boilerplate(void) {
     }
     // while option is less than 0 or more than choice
 }
+
+void get_options(options* opts_pointer, int argc, char** argv) {
+    opts_pointer->name = get_name(argc, argv);
+    opts_pointer->lang = get_language();
+    opts_pointer->wants_boilerplate = ask_boilerplate();
+}
+
+void show_opts(options* opts) {
+    printf("name: %s, lang: %s, boilerplate: %s", opts->name, language_to_string(opts->lang),
+           (opts->wants_boilerplate ? "true" : "false"));
+}

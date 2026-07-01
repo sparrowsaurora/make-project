@@ -1,21 +1,23 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-#include <menu.h>
-#include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define PROGRAM_NAME_ARG 1  // second argument is the name of the program
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
-#define CTRLD 4
-#define CHAR_Q 113
 
 typedef enum {
     C,
     CPP,
 } supported_langs_t;
+
+typedef struct {
+    const char* name;
+    supported_langs_t lang;
+    bool wants_boilerplate;
+} options;
 
 /*
  * Gets the program name from the command line arguments
@@ -38,5 +40,9 @@ const char* language_to_string(supported_langs_t lang);
  * true = boilerplate, false = none
  */
 bool ask_boilerplate(void);
+
+void get_options(options* opts_pointer, int argc, char** argv);
+
+void show_opts(options* opts);
 
 #endif
