@@ -1,8 +1,8 @@
-// #include <ncurses.h>
 // #include <stdio.h>
 // #include <stdlib.h>
 
 #include "options.h"
+#include "structure.h"
 
 int main(int argc, char** argv) {
     options opts;
