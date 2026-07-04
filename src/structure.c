@@ -1,9 +1,6 @@
 #include "structure.h"
 
-/**
- * creats a file object
- */
-bool make_file(const char* name, const char* boilerplate) {
+bool make_file(const char* path, const char* name, const char* boilerplate) {
     FILE* file = fopen(name, "w");
     if (file == NULL) {
         printf("Error creating file");
@@ -18,11 +15,12 @@ bool make_file(const char* name, const char* boilerplate) {
     return true;
 }
 
-/**
- * creats a directory object
- */
-bool make_dir(const char* name) {
+bool make_dir(const char* path, const char* name) {
     char* filepath = NULL;
     size_t size = 0;
-    CREATE_DIR(name);
+
+    if (CREATE_DIR(name) == -1) {
+        printf("Error creating directory");
+        return false;
+    }
 }

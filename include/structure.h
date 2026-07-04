@@ -7,24 +7,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// includes and definitions for multiplatform {CREATE_DIR} macro
 #ifdef _WIN32
 #include <direct.h>
 #define CREATE_DIR(dir) _mkdir(dir)
 #else
 #include <sys/stat.h>  // Required for mkdir
 #include <sys/types.h>
-#define PERMISSION 0755  // octal notation
+#define PERMISSION 0777  // octal notation
 #define CREATE_DIR(dir) mkdir(dir, PERMISSION)
 #endif
 
 /**
- * creats a file object
+ * creates a file object
+ *
+ * if ~ path = NULL
+ * if no boilerplate = NULL
  */
-bool make_file(const char* name, const char* boilerplate);
+bool make_file(const char* path, const char* name, const char* boilerplate);
 
 /**
- * creats a directory object
+ * creates a directory object at a desired location {path}
+ *
+ * if ~ path = NULL
  */
-bool make_dir(const char* name);
+bool make_dir(const char* path, const char* name);
 
 #endif
