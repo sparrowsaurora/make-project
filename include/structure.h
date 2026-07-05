@@ -18,6 +18,8 @@
 #define CREATE_DIR(dir) mkdir(dir, PERMISSION)
 #endif
 
+// possibly change so i can make files via the path alone, and dirs by leaving the end with a /
+
 /**
  * creates a file object
  *
