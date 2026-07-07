@@ -10,12 +10,10 @@ int main(int argc, char** argv) {
 
     // show_opts(&opts);
 
-    make_dir(NULL, "hi");
-    // make_dir("i", "hi2");
-    make_dir("hi", "hi3");
-    make_file("hi/hi3", "stuff.txt", NULL);
-    make_file("hi", "test.c", "some words");
-    make_file(NULL, "hi.md", NULL);
+    make("dir_test/");
+    make("file.txt", "boilerplate");
+    make("dir_test/test_file.md", NULL);
+    make("dir_test/test_file2.md", "boo");
 
     return EXIT_SUCCESS;
 }
