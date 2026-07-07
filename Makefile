@@ -10,4 +10,4 @@ build:
 	cp ./make_project ../mp
 
 clean:
-	rm -rf build/ mp
+	rm -rf build/ mp test/*
