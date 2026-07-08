@@ -2,7 +2,10 @@
 // #include <stdlib.h>
 
 #include "options.h"
+#include "presets.h"
 #include "structure.h"
+
+#define PRESETS_DIR "./presets/"
 
 int main(int argc, char** argv) {
     // options opts;
@@ -10,10 +13,12 @@ int main(int argc, char** argv) {
 
     // show_opts(&opts);
 
-    make("dir_test/");
-    make("file.txt", "boilerplate");
-    make("dir_test/test_file.md", NULL);
-    make("dir_test/test_file2.md", "boo");
+    preset_t** presets = NULL;  // pointer to array of presets
+    if (load_presets(presets, PRESETS_DIR) == false) {
+        fprintf(stderr, "Error Loarding presets");
+        exit(EXIT_FAILURE);
+    }
 
+    free(presets);
     return EXIT_SUCCESS;
 }
