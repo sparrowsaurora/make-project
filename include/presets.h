@@ -17,12 +17,12 @@
 
 #define FILE_TYPE_LENGTH 4
 
-typedef struct node;
+typedef struct node node_t;
 
-typedef struct {
+typedef struct node {
     preset_t data;
-    node* next;
-} node;
+    node_t* next;
+} node_t;
 
 typedef struct {
     const char* name;
@@ -40,12 +40,14 @@ typedef struct {
  * presets -> a pointer to a a lists of heap allocated structs
  * config_dir_path -> string to the configs dir
  */
-bool load_presets(preset_t** presets, const char* config_dir_path);
+bool load_presets(node_t* presets, const char* config_dir_path);
 
 static bool get_preset(preset_t* preset, struct dirent* entry);
 
 void show_preset(preset_t* preset);
 
-make_presets_list()
+static void add_preset(node_t** head, preset_t data);
+
+void free_preset_list(node_t* head);
 
 #endif

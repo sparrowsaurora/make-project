@@ -12,13 +12,13 @@ int main(int argc, char** argv) {
     // get_options(&opts, argc, argv);
 
     // show_opts(&opts);
+    node_t* presets = NULL;
 
-    preset_t** presets = NULL;  // pointer to array of presets
-    if (load_presets(presets, PRESETS_DIR) == false) {
+    if (load_presets(&presets, PRESETS_DIR) == false) {
         fprintf(stderr, "Error Loarding presets");
         exit(EXIT_FAILURE);
     }
 
-    free(presets);
+    free_preset_list(presets);
     return EXIT_SUCCESS;
 }
