@@ -16,13 +16,8 @@
 #include <sys/types.h>
 
 #define FILE_TYPE_LENGTH 4
-
-typedef struct node node_t;
-
-typedef struct node {
-    preset_t data;
-    node_t* next;
-} node_t;
+#define MAX_PRESET_NAME_LENGTH 64
+#define PRESETS_LIST_SIZE 16
 
 typedef struct {
     const char* name;
@@ -34,20 +29,22 @@ typedef struct {
     const entry_t* entries;  // * is an array here
 } preset_t;
 
+typedef preset_t presets_list[PRESETS_LIST_SIZE];
+
 /**
  * Load presets from presets file
  *
  * presets -> a pointer to a a lists of heap allocated structs
  * config_dir_path -> string to the configs dir
  */
-bool load_presets(node_t* presets, const char* config_dir_path);
+bool load_presets(presets_list* presets, const char* config_dir_path);
 
-static bool get_preset(preset_t* preset, struct dirent* entry);
+/**
+ * PRIVATE:
+ * With the entry load a preset into the nextopen slot in the presets array
+ */
+static bool get_preset(preset_t* preset, struct dirent* entry, const char* config_file_path);
 
 void show_preset(preset_t* preset);
-
-static void add_preset(node_t** head, preset_t data);
-
-void free_preset_list(node_t* head);
 
 #endif
