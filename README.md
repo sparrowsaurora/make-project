@@ -14,6 +14,8 @@ I'm making this project so have a quick and easy way to set up projects, and I'm
 
 - multiple language templates
 - optional boilerplate code
+- customisable profiles for languages
+- user may add own language configs
 
 ## Usage
 
@@ -31,4 +33,8 @@ That's it. it will create the directory and all the necessary starter files.
 ## Contact
 
 \> [github](https://github.com/sparrowsaurora)  
-\> [email](mailto:sparrows.au@gmail.com)
+\> [email](mailto:ryankelley1711@gmail.com)
+
+## Author's Note:
+
+For anyone reading this far: I like many of my peers will be a life-long student. Any feedback on how i may improve is appreciated. Thankyou for your time, and have a lovely day/night.
