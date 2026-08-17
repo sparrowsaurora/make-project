@@ -15,9 +15,12 @@
 #include <dirent.h>
 #include <sys/types.h>
 
+//todo: put these values in a global config?
+//! COMPILATION ONLY (user may not edit)
 #define FILE_TYPE_LENGTH 4
 #define MAX_PRESET_NAME_LENGTH 64
 #define PRESETS_LIST_SIZE 16
+#define MAX_ENTRIES 32
 
 typedef struct {
     const char* name;
@@ -30,6 +33,7 @@ typedef struct {
 } preset_t;
 
 typedef preset_t presets_list[PRESETS_LIST_SIZE];
+
 
 /**
  * Load presets from presets file
@@ -46,5 +50,12 @@ bool load_presets(presets_list* presets, const char* config_dir_path);
 static bool get_preset(preset_t* preset, struct dirent* entry, const char* config_file_path);
 
 void show_preset(preset_t* preset);
+
+void show_entry(entry_t* entry);
+
+/**
+ * convert a line from a config file to be an entry type
+ */
+static bool format_config_line(entry_t** pair, char* line);
 
 #endif

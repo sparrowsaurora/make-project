@@ -12,7 +12,7 @@ static bool make_file(const char* path, const char* boilerplate) {
     }
 
     if (boilerplate != NULL) {
-        fprintf(file, boilerplate);
+        fprintf(file, "%s", boilerplate);
     }
 
     fclose(file);
