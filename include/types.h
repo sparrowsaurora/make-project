@@ -11,7 +11,7 @@ typedef struct {
 
 typedef struct preset_t {
     const char* lang;
-    const entry_vec_t entries;
+    entry_vec_t entries;
 } preset_t;
 
 // preset_list is now preset_node* head
@@ -34,14 +34,16 @@ void free_entry_vec(entry_vec_t* v);
 
 // preset_list = linked_list
 
-typedef struct {
+typedef struct preset_node {
     preset_t preset;
     struct preset_node* next;
 } preset_node;
 
-preset_node* create_preset_list(preset_t preset);
+preset_node* create_preset_node(preset_t preset);
 
 void append_preset(preset_node** head, preset_t preset);
+
+void printList(preset_node* head);
 
 void free_preset_list(preset_node* head);
 
