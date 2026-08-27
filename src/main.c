@@ -16,17 +16,17 @@ int main(int argc, char** argv) {
     
     preset_node* presets_head = NULL;
 
-    if (load_presets(&presets, PRESETS_DIR) == false) {
+    if (load_presets(presets_head, PRESETS_DIR) == false) {
         fprintf(stderr, "Error Loarding presets");
         exit(EXIT_FAILURE);
     }
 
     // select preset here
     // preset_t preset = ...
-    if (build(&presets) == false) {
-        fprintf(stderr, "Error Building starter project");
-        exit(EXIT_FAILURE);
-    }
+    // if (build(presets_head) == false) {
+    //     fprintf(stderr, "Error Building starter project");
+    //     exit(EXIT_FAILURE);
+    // }
 
     free_preset_list(presets_head);
     return EXIT_SUCCESS;

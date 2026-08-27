@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "types.h"
+
 // file headers
 #include <dirent.h>
 #include <sys/types.h>
@@ -19,20 +21,7 @@
 //! COMPILATION ONLY (user may not edit)
 #define FILE_TYPE_LENGTH 4
 #define MAX_PRESET_NAME_LENGTH 64
-#define PRESETS_LIST_SIZE 16
-#define MAX_ENTRIES 32
-
-typedef struct {
-    const char* name;
-    const char* boilerplate;
-} entry_t;
-
-typedef struct {
-    const char* lang;
-    const entry_t* entries;  // * is an array here
-} preset_t;
-
-typedef preset_t presets_list[PRESETS_LIST_SIZE];
+#define BOILERPLATE_IS_NULL "NULL"
 
 
 /**
@@ -41,13 +30,21 @@ typedef preset_t presets_list[PRESETS_LIST_SIZE];
  * presets -> a pointer to a a lists of heap allocated structs
  * config_dir_path -> string to the configs dir
  */
-bool load_presets(presets_list* presets, const char* config_dir_path);
+bool load_presets(preset_node* presets_head, const char* config_dir_path);
 
 /**
  * PRIVATE:
  * With the entry load a preset into the nextopen slot in the presets array
  */
-static bool get_preset(preset_t* preset, struct dirent* entry, const char* config_file_path);
+static bool get_preset(
+    preset_t* preset, struct dirent* entry, const char* config_file_path
+);
+
+static void get_preset_name(char** name, struct dirent* entry);
+
+static char* get_preset_path(
+    char* combined, const char* name, const char* config_file_path, const char* file_type
+);
 
 void show_preset(preset_t* preset);
 
@@ -56,6 +53,6 @@ void show_entry(entry_t* entry);
 /**
  * convert a line from a config file to be an entry type
  */
-static bool format_config_line(entry_t** pair, char* line);
+static bool format_entry(entry_t** pair, char* line);
 
 #endif

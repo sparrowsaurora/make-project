@@ -1,10 +1,8 @@
 #include "presets.h"
 
-bool load_presets(presets_list* presets, const char* config_file_path) {
+bool load_presets(preset_node* presets_head, const char* config_file_path) {
     // open dir
     DIR* dir = opendir(config_file_path);
-
-    // if null == fail
     if (dir == NULL) {
         fprintf(stderr, "Failed to open config directory");
         return false;
@@ -16,7 +14,6 @@ bool load_presets(presets_list* presets, const char* config_file_path) {
         if (entry->d_name[0] == '.') continue;
         printf("found entry: %s\n", entry->d_name);
 
-
         preset_t* preset = (preset_t*)malloc(sizeof(preset_t));
         get_preset(preset, entry, config_file_path);
 
@@ -27,69 +24,90 @@ bool load_presets(presets_list* presets, const char* config_file_path) {
     return true;
 }
 
-static bool get_preset(preset_t* preset, struct dirent* entry, const char* config_file_path) {
-    // get filename for language
-    char name[MAX_PRESET_NAME_LENGTH];
-    int deliminater_position = (strlen(entry->d_name) - FILE_TYPE_LENGTH);
-    strncpy(name, entry->d_name, deliminater_position);
-    name[deliminater_position] = '\0';
-    preset->lang = name;
-
-    printf("name: %s\n", name);
-
-    // show_preset(preset);
-
-    // get entries {name, boilerplate}
-    int required_size = strlen(config_file_path) + strlen(name) + 1;
-    char* combined = (char*)malloc(required_size);
-
+static char* get_preset_path(
+    char* combined, const char* name, const char* config_file_path, const char* file_type
+) {
     if (combined == NULL) {
         fprintf(stderr, "error allocating memory for file path");
         return false;
     }
 
     strcpy(combined, config_file_path);
-    strcat(combined, entry->d_name);
-
+    strcat(combined, name);
+    strcat(combined, file_type); 
     printf("path: %s\n", combined);
+}
 
-    FILE* file = fopen(combined, "r");
+static void get_preset_name(char** name, struct dirent* entry) {
+    // get filename for language
+    char buffer[MAX_PRESET_NAME_LENGTH];
+    int deliminater_position = (strlen(entry->d_name) - FILE_TYPE_LENGTH);
+
+    int required_size = strlen(entry->d_name) + 1;
+    *name = (char*)malloc(required_size);
+
+    strncpy(buffer, entry->d_name, deliminater_position);
+    buffer[deliminater_position] = '\0';
+    strcpy(*name, buffer);
+}
+
+static bool get_preset(preset_t* preset, struct dirent* entry, const char* config_file_path) {
+    // show_preset(preset);
+    char* name = NULL;
+    get_preset_name(&name, entry);
+    preset->lang = name;
+    printf("name: %s\n", name);
+
+    char* full_path = (char*)malloc(
+        (strlen(config_file_path) + strlen(name) + FILE_TYPE_LENGTH + 1)
+    );
+    get_preset_path(full_path, name, config_file_path, ".cfg");
+    free(name);
+
+    FILE* file = fopen(full_path, "r");
     if (file == NULL) {
-        fprintf(stderr, "PRESET FILE DOES NOT EXIST?");
+        fprintf(stderr, "PRESET FILE DOES NOT EXIST?\n");
         return false;
     }
+    
 
-    // entry_t* entries[MAX_ENTRIES];
+    entry_vec_t entries;
+    init_entry_vec(&entries);
 
     entry_t* config_line = NULL;
     
     char* line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    short iter = 0;
     while ((read = getline(&line, &len, file)) != -1) {
         printf("line: %s", line);
         
         config_line = (entry_t*)malloc(sizeof(entry_t));
-        format_config_line(&config_line, line);
+        format_entry(&config_line, line);
         show_entry(config_line);
         // return to preset
         // add to an array of entries
-        
+        // need help here moving data from config line into array maybe via copy?
+        // use a deep copy
+        entry_t current_entry = {
+            .name = config_line->name,
+            .boilerplate = config_line->boilerplate,
+        };
+        add_entry(&entries, current_entry);
 
         free(config_line);
         config_line = NULL;
-        
-        iter++;
     }
+
     free(line);
     fclose(file);
-    free(combined);
+    free(full_path);
 
+    preset->entries = entries;
     return true;
 }
 
-static bool format_config_line(entry_t** pair, char* line) {
+static bool format_entry(entry_t** pair, char* line) {
     char* name = NULL;
     char* boilerplate = NULL;
 
@@ -132,6 +150,6 @@ void show_entry(entry_t* entry) {
     printf(
             "{\n\tname: %s, \n\tboilerplate: %s\n}\n", 
             entry->name, 
-            (entry->boilerplate ? entry->boilerplate : "NULL")
+            (entry->boilerplate ? entry->boilerplate : BOILERPLATE_IS_NULL)
         );
 }
