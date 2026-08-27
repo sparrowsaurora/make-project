@@ -69,10 +69,10 @@ void append_preset(preset_node** head, preset_t preset) {
     current->next = newNode;
 }
 
-void printList(preset_node* head) {
+void print_list(preset_node* head) {
     preset_node* current = head;
     while (current != NULL) {
-        printf("%d -> ", current->preset.lang);
+        printf("%s -> ", current->preset.lang);
         current = current->next;
     }
     printf("NULL\n");
@@ -84,6 +84,7 @@ void free_preset_list(preset_node* head) {
     
     while (current != NULL) {
         nextNode = current->next;
+        free_entry_vec(&current->preset.entries);
         free(current);
         current = nextNode;
     }

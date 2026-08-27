@@ -9,20 +9,17 @@ typedef struct {
     const char* boilerplate;
 } entry_t;
 
-typedef struct preset_t {
-    const char* lang;
-    entry_vec_t entries;
-} preset_t;
-
-// preset_list is now preset_node* head
-
-// entries = vector
-
 typedef struct {
     entry_t* data;
     size_t size;
     size_t capacity;
 } entry_vec_t;
+
+// entries = vector
+typedef struct preset_t {
+    const char* lang;
+    entry_vec_t entries;
+} preset_t;
 
 void init_entry_vec(entry_vec_t* v);
 
@@ -39,11 +36,11 @@ typedef struct preset_node {
     struct preset_node* next;
 } preset_node;
 
-preset_node* create_preset_node(preset_t preset);
+static preset_node* create_preset_node(preset_t preset);
 
 void append_preset(preset_node** head, preset_t preset);
 
-void printList(preset_node* head);
+void print_list(preset_node* head);
 
 void free_preset_list(preset_node* head);
 
