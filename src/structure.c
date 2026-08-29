@@ -75,3 +75,21 @@ static void router(const char* path, const char* boilerplate) {
 
 bool make_without_boilerplate(const char* path) { router(path, NULL); }
 bool make_with_boilerplate(const char* path, const char* boilerplate) { router(path, boilerplate); }
+
+
+bool build(preset_t* preset) {
+    printf("in build\n");
+    // for entry in entires
+    entry_vec_t* entry_vec = &preset->entries;
+    printf("got vec\n");
+    printf("Now building: %s preset\n", preset->lang); 
+    const size_t entries_count = count_entries(entry_vec);
+    printf("Entry count: %zu\n", entries_count);
+
+    for (int i = 0; i < entries_count; i++) {
+        entry_t current_entry = get_entry(entry_vec, i);
+        make(current_entry.name, current_entry.boilerplate);
+    }
+
+    return true;
+}

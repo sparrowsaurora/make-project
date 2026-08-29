@@ -34,10 +34,19 @@ entry_t get_entry(entry_vec_t* v, size_t i) {
 }
 
 void free_entry_vec(entry_vec_t* v) {
+    free(v->data->name);
+    v->data->name = NULL;
+    free(v->data->boilerplate);
+    v->data->boilerplate = NULL;
+
     free(v->data);
     v->data = NULL;
     v->size = 0;
     v->capacity = 0;
+}
+
+size_t count_entries(entry_vec_t* v) {
+    return (size_t)v->size;
 }
 
 // Preset list
@@ -85,7 +94,28 @@ void free_preset_list(preset_node* head) {
     while (current != NULL) {
         nextNode = current->next;
         free_entry_vec(&current->preset.entries);
+        free(current->preset.lang);
         free(current);
         current = nextNode;
     }
+}
+
+size_t count_nodes(preset_node* head) {\
+    size_t count = 0;
+    preset_node* current = head;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+void show_preset(preset_t* preset) { printf("Langauge: %s\n", preset->lang); }
+
+void show_entry(entry_t* entry) {
+    printf(
+            "{\n\tname: %s, \n\tboilerplate: %s\n}\n", 
+            entry->name, 
+            (entry->boilerplate ? entry->boilerplate : BOILERPLATE_IS_NULL)
+        );
 }

@@ -21,7 +21,6 @@
 //! COMPILATION ONLY (user may not edit)
 #define FILE_TYPE_LENGTH 4
 #define MAX_PRESET_NAME_LENGTH 64
-#define BOILERPLATE_IS_NULL "NULL"
 
 
 /**
@@ -30,7 +29,7 @@
  * presets -> a pointer to a a lists of heap allocated structs
  * config_dir_path -> string to the configs dir
  */
-bool load_presets(preset_node* presets_head, const char* config_dir_path);
+bool load_presets(preset_node** presets_head, const char* config_dir_path);
 
 /**
  * PRIVATE:
@@ -45,10 +44,6 @@ static void get_preset_name(char** name, struct dirent* entry);
 static char* get_preset_path(
     char* combined, const char* name, const char* config_file_path, const char* file_type
 );
-
-void show_preset(preset_t* preset);
-
-void show_entry(entry_t* entry);
 
 /**
  * convert a line from a config file to be an entry type

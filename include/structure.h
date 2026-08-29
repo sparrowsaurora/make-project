@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "types.h"
+
 // includes and definitions for multiplatform {CREATE_DIR} macro
 #ifdef _WIN32
 #include <direct.h>
@@ -52,3 +54,8 @@ bool make_with_boilerplate(const char* path, const char* boilerplate);
     GET_MACRO(__VA_ARGS__, make_with_boilerplate, make_without_boilerplate)(__VA_ARGS__)
 
 #endif
+
+/**
+ * Global command to create a starter project from a config
+ */
+bool build(preset_t* preset);

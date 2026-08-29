@@ -1,6 +1,6 @@
 #include "presets.h"
 
-bool load_presets(preset_node* presets_head, const char* config_file_path) {
+bool load_presets(preset_node** presets_head, const char* config_file_path) {
     // open dir
     DIR* dir = opendir(config_file_path);
     if (dir == NULL) {
@@ -16,8 +16,9 @@ bool load_presets(preset_node* presets_head, const char* config_file_path) {
 
         preset_t* preset = (preset_t*)malloc(sizeof(preset_t));
         get_preset(preset, entry, config_file_path);
+        append_preset(presets_head, *preset);
 
-        free(preset); // ? might not need this here temp measure
+        free(preset); // ? append struct copies data
     }
 
     closedir(dir);
@@ -62,7 +63,6 @@ static bool get_preset(preset_t* preset, struct dirent* entry, const char* confi
         (strlen(config_file_path) + strlen(name) + FILE_TYPE_LENGTH + 1)
     );
     get_preset_path(full_path, name, config_file_path, ".cfg");
-    free(name);
 
     FILE* file = fopen(full_path, "r");
     if (file == NULL) {
@@ -138,18 +138,12 @@ static bool format_entry(entry_t** pair, char* line) {
         name = line;
     }
 
-    (*pair)->name = name;
-    (*pair)->boilerplate = boilerplate;
+    (*pair)->name = strdup(name);
+    if (boilerplate != NULL) {
+        (*pair)->boilerplate = strdup(boilerplate);
+    } else {
+        (*pair)->boilerplate = NULL;
+    }
 
     return true;
-}
-
-void show_preset(preset_t* preset) { printf("Langauge: %s\n", preset->lang); }
-
-void show_entry(entry_t* entry) {
-    printf(
-            "{\n\tname: %s, \n\tboilerplate: %s\n}\n", 
-            entry->name, 
-            (entry->boilerplate ? entry->boilerplate : BOILERPLATE_IS_NULL)
-        );
 }
