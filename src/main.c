@@ -1,15 +1,24 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-
 #include "options.h"
 #include "presets.h"
 #include "structure.h"
 
+#define ENV_PRESETS_DIR_NAME "MP_PRESETS_DIR"
 
-
-#define PRESETS_DIR "./presets/"
+const char* getPresetsDir() {
+    // check env
+    const char* presetsDir = getenv(ENV_PRESETS_DIR_NAME);
+    if (!presetsDir) {
+        fprintf(stderr, "\"MP_PRESETS_DIR\" is not defined as an environment variable");
+        exit(EXIT_FAILURE);
+    }
+    return presetsDir;
+}
 
 int main(int argc, char** argv) {
+    const char* PRESETS_DIR = getPresetsDir();
+
+    // add manual
+
     // options opts;
     // get_options(&opts, argc, argv);
 
@@ -17,7 +26,7 @@ int main(int argc, char** argv) {
     
     preset_node* presets_head = NULL;
 
-    if (load_presets(&presets_head, PRESETS_DIR) == false) {
+    if (false == load_presets(&presets_head, PRESETS_DIR)) {
         fprintf(stderr, "Error Loarding presets");
         exit(EXIT_FAILURE);
     }
@@ -30,7 +39,7 @@ int main(int argc, char** argv) {
     preset_t* preset = &presets_head->next->preset;
     show_preset(preset);
 
-    if (build(preset) == false) {
+    if (false == build(preset)) {
         fprintf(stderr, "Error Building starter project");
         exit(EXIT_FAILURE);
     }
