@@ -14,6 +14,8 @@ const char* getPresetsDir() {
     return presetsDir;
 }
 
+
+
 int main(int argc, char** argv) {
     const char* PRESETS_DIR = getPresetsDir();
 
@@ -25,7 +27,6 @@ int main(int argc, char** argv) {
     // show_opts(&opts);
     
     preset_node* presets_head = NULL;
-
     if (false == load_presets(&presets_head, PRESETS_DIR)) {
         fprintf(stderr, "Error Loarding presets");
         exit(EXIT_FAILURE);

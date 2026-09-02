@@ -43,19 +43,27 @@ static bool make_dir(const char* path);
  */
 static void router(const char* path, const char* boilerplate);
 
-// function for macro with 1 param
+/**
+ * function for macro with 1 param
+ */
 bool make_without_boilerplate(const char* path);
 
-// function for macro with 2 param
+/**
+ * function for macro with 2 param
+ */
 bool make_with_boilerplate(const char* path, const char* boilerplate);
 
+
+/**
+ * full macro for selecting whether to make a file or a directory
+ */
 #define GET_MACRO(_1, _2, NAME, ...) NAME
 #define make(...) \
     GET_MACRO(__VA_ARGS__, make_with_boilerplate, make_without_boilerplate)(__VA_ARGS__)
-
-#endif
 
 /**
  * Global command to create a starter project from a config
  */
 bool build(preset_t* preset);
+
+#endif

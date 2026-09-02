@@ -19,30 +19,36 @@ typedef struct {
     bool wants_boilerplate;
 } options;
 
-/*
+/**
  * Gets the program name from the command line arguments
  */
 const char* get_name(int argc, char** argv);
 
-/*
+/**
  * uses ncurses to get the laguage from supported options
  * see supported_langs_t for details
  */
 supported_langs_t get_language(void);
 
-/*
+/**
  * to_string method for the supported_langs_t type
  */
 const char* language_to_string(supported_langs_t lang);
 
-/*
+/**
  * uses ncurses to ask if the user wants boilerplate code
  * true = boilerplate, false = none
  */
 bool ask_boilerplate(void);
 
+/**
+ * Populate Options with name, language, boilerplate
+ */
 void get_options(options* opts_pointer, int argc, char** argv);
 
+/**
+ * print options to stdout in a clean format
+ */
 void show_opts(options* opts);
 
 #endif

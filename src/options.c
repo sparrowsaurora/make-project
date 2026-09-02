@@ -1,6 +1,6 @@
 #include "options.h"
 
-const char* choices[] = {"C", "C++"};
+const char* choices[] = {"C", "C++"}; //! update to gather from presets
 
 const char* get_name(int argc, char** argv) {
     // if no first arg or more than 1 arg -> usage message -> exit
