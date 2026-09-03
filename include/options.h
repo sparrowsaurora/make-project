@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define PROGRAM_NAME_ARG 1  // second argument is the name of the program
 
@@ -42,13 +43,26 @@ const char* language_to_string(supported_langs_t lang);
 bool ask_boilerplate(void);
 
 /**
- * Populate Options with name, language, boilerplate
+ * check if the user's index one parameter is "--help"
  */
-void get_options(options* opts_pointer, int argc, char** argv);
+bool check_help_command(int* argc, char*** argv);
+
+/**
+ * print the help message
+ */
+void print_help();
+
+/**
+ * Populate Options with name, language, boilerplate
+ * if user enters a help command return false
+ */
+bool get_options(options* opts_pointer, int argc, char** argv);
 
 /**
  * print options to stdout in a clean format
  */
 void show_opts(options* opts);
+
+
 
 #endif

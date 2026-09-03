@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
 
     // add manual
 
-    // options opts;
-    // get_options(&opts, argc, argv);
+    options opts;
+    if (get_options(&opts, argc, argv) == false) return EXIT_SUCCESS;
 
-    // show_opts(&opts);
+    show_opts(&opts);
     
     preset_node* presets_head = NULL;
     if (false == load_presets(&presets_head, PRESETS_DIR)) {

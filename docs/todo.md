@@ -1,8 +1,5 @@
 # TO DO
 
-## General
--make manual / --help page
-
 ## Options.h
 - get choices[] from presets.h
 

@@ -65,10 +65,27 @@ bool ask_boilerplate(void) {
     // while option is less than 0 or more than choice
 }
 
-void get_options(options* opts_pointer, int argc, char** argv) {
+bool check_help_command(int* argc, char*** argv) {
+    if (*argc < 1) return false;
+    if (strcmp((*argv)[1], "--help") == 0) return true;
+    return false;
+}
+
+void print_help() {
+    const char* help_msg = "mp [make project] 1.0\n\n"\
+    "Usage: mp [project name]\n";
+    puts(help_msg);
+}
+
+bool get_options(options* opts_pointer, int argc, char** argv) {
+    if(check_help_command(&argc, &argv) == true) {
+        print_help();
+        return false;
+    }
     opts_pointer->name = get_name(argc, argv);
     opts_pointer->lang = get_language();
     opts_pointer->wants_boilerplate = ask_boilerplate();
+    return true;
 }
 
 void show_opts(options* opts) {
