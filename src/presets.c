@@ -147,3 +147,19 @@ static bool format_entry(entry_t** pair, char* line) {
 
     return true;
 }
+
+choices_t get_preset_choices(preset_node* presets_head) {
+    choices_t arr;
+    memset(arr.choices, 0, sizeof(arr.choices));
+
+    preset_node* current = presets_head; // todo: switch to dynamic
+    for (int i = 0; i < MAX_CHOICES; i++) {
+        if (current == NULL) return arr;
+        arr.choices[i] = current->preset.lang;
+        current = current->next;
+    }
+    //! IF MORE THAN 16 NODES
+    fprintf(stderr, "%d config files in all we account for here.\n", MAX_CHOICES);
+    //? note: might be worth turning into a linked list
+    return arr;
+}

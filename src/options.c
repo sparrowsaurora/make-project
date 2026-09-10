@@ -1,8 +1,6 @@
 #include "options.h"
 
-const char* choices[] = {"C", "C++"}; //! update to gather from presets
-
-const char* get_name(int argc, char** argv) {
+const char* get_name(int argc, char** argv, choices_t choices) {
     // if no first arg or more than 1 arg -> usage message -> exit
     if (argc != (PROGRAM_NAME_ARG + 1)) {
         printf("usage msg\n");
@@ -12,10 +10,10 @@ const char* get_name(int argc, char** argv) {
     return argv[PROGRAM_NAME_ARG];
 }
 
-supported_langs_t get_language(void) {
-    int choice_count = ARRAY_SIZE(choices);
+supported_langs_t get_language(choices_t choices) {
+    int choice_count = ARRAY_SIZE(choices.choices);
     for (int i = 0; i < (choice_count); ++i) {
-        printf("%d\t%s\n", (i + 1), choices[i]);
+        printf("%d\t%s\n", (i + 1), choices.choices[i]);
     }
 
     char* line = NULL;
@@ -36,7 +34,7 @@ supported_langs_t get_language(void) {
     return lang;
 }
 
-const char* language_to_string(supported_langs_t lang) { return choices[(int)lang]; }
+const char* language_to_string(supported_langs_t lang, choices_t choices) { return choices.choices[(int)lang]; }
 
 bool ask_boilerplate(void) {
     // render window to use up and down arrows to see different options?
@@ -77,18 +75,18 @@ void print_help() {
     puts(help_msg);
 }
 
-bool get_options(options* opts_pointer, int argc, char** argv) {
+bool get_options(options* opts_pointer, int argc, char** argv, choices_t choices) {
     if(check_help_command(&argc, &argv) == true) {
         print_help();
         return false;
     }
-    opts_pointer->name = get_name(argc, argv);
-    opts_pointer->lang = get_language();
+    opts_pointer->name = get_name(argc, argv, choices);
+    opts_pointer->lang = get_language(choices);
     opts_pointer->wants_boilerplate = ask_boilerplate();
     return true;
 }
 
-void show_opts(options* opts) {
-    printf("name: %s, lang: %s, boilerplate: %s", opts->name, language_to_string(opts->lang),
+void show_opts(options* opts, choices_t choices) {
+    printf("name: %s, lang: %s, boilerplate: %s\n", opts->name, language_to_string(opts->lang, choices),
            (opts->wants_boilerplate ? "true" : "false"));
 }

@@ -60,4 +60,6 @@ static char* get_preset_path(
  */
 static bool format_entry(entry_t** pair, char* line);
 
+choices_t get_preset_choices(preset_node* presets_head);
+
 #endif

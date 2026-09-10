@@ -5,6 +5,11 @@
 #include <stdio.h> 
 
 #define BOILERPLATE_IS_NULL "NULL"
+#define MAX_CHOICES 16
+
+typedef struct {
+    char* choices[MAX_CHOICES];
+} choices_t;
 
 typedef struct {
     char* name;

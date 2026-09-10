@@ -17,14 +17,7 @@ const char* getPresetsDir() {
 
 
 int main(int argc, char** argv) {
-    const char* PRESETS_DIR = getPresetsDir();
-
-    // add manual
-
-    options opts;
-    if (get_options(&opts, argc, argv) == false) return EXIT_SUCCESS;
-
-    show_opts(&opts);
+    const char* PRESETS_DIR = getPresetsDir(); 
     
     preset_node* presets_head = NULL;
     if (false == load_presets(&presets_head, PRESETS_DIR)) {
@@ -33,11 +26,22 @@ int main(int argc, char** argv) {
     }
 
     printf("presets loaded\n");
-
     print_list(presets_head);
 
-    // select preset here
-    preset_t* preset = &presets_head->next->preset;
+    choices_t choices = get_preset_choices(presets_head);
+    puts("gathered choices");
+
+    options opts;
+    if (get_options(&opts, argc, argv, choices) == false) return EXIT_SUCCESS;
+
+    show_opts(&opts, choices);
+    
+
+    // select preset here with option
+    preset_t* preset = &presets_head->next->preset; //! bug: straight up doesnt select what the user wants.
+    // could fix with a look that goes ->next for each inded is chosen
+
+
     show_preset(preset);
 
     if (false == build(preset)) {

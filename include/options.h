@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "types.h"
+
 #define PROGRAM_NAME_ARG 1  // second argument is the name of the program
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -23,18 +25,18 @@ typedef struct {
 /**
  * Gets the program name from the command line arguments
  */
-const char* get_name(int argc, char** argv);
+const char* get_name(int argc, char** argv, choices_t choices);
 
 /**
  * uses ncurses to get the laguage from supported options
  * see supported_langs_t for details
  */
-supported_langs_t get_language(void);
+supported_langs_t get_language(choices_t choices);
 
 /**
  * to_string method for the supported_langs_t type
  */
-const char* language_to_string(supported_langs_t lang);
+const char* language_to_string(supported_langs_t lang, choices_t choices);
 
 /**
  * uses ncurses to ask if the user wants boilerplate code
@@ -56,12 +58,12 @@ void print_help();
  * Populate Options with name, language, boilerplate
  * if user enters a help command return false
  */
-bool get_options(options* opts_pointer, int argc, char** argv);
+bool get_options(options* opts_pointer, int argc, char** argv, choices_t choices);
 
 /**
  * print options to stdout in a clean format
  */
-void show_opts(options* opts);
+void show_opts(options* opts, choices_t choices);
 
 
 
